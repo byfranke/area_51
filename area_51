@@ -47,6 +47,7 @@ def add_comment(comment, password):
                  (timestamp, encrypted_comment, encryption_key, password_hash))
     conn.commit()
     print("Comment added successfully!")
+    return True
 
 def list_comments():
     cursor = conn.execute('SELECT id, timestamp FROM comments')
@@ -75,6 +76,8 @@ create_table()
 
 while True:
     print("""
+
+
      \                           ___| _ | 
     _ \     __|  _ \   _` |      __ \   | 
    ___ \   |     __/  (   |        ) |  | 
@@ -92,7 +95,8 @@ while True:
         confirm_password = input("Confirm the password: ")
         if password == confirm_password:
             comment = input("Enter your comment: ")
-            add_comment(comment, password)
+            if add_comment(comment, password):
+                break  # Exit the loop after adding a comment
         else:
             print("Passwords do not match. Comment not added.")
     elif option == '2':
