@@ -6,9 +6,9 @@ from cryptography.fernet import Fernet
 import hashlib
 import os
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-database_dir = os.path.join(script_dir, 'data')
-database_path = os.path.join(database_dir, 'database.db')
+user_home = os.path.expanduser("~")
+database_dir = os.path.join(user_home, 'Documents', 'Database')
+database_path = os.path.join(database_dir, 'Area_51.db')
 
 if not os.path.exists(database_dir):
     os.makedirs(database_dir)
@@ -75,8 +75,6 @@ create_table()
 
 while True:
     print("""
-
-
      \                           ___| _ | 
     _ \     __|  _ \   _` |      __ \   | 
    ___ \   |     __/  (   |        ) |  | 
