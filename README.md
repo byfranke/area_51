@@ -42,11 +42,11 @@ Area 51 offers a secure, easy-to-use solution for storing and managing sensitive
 
 # Installation For Linux
 
-Step : 1 Download DNS_IS
+Step : 1 Download Area 51
 ```
 git clone https://github.com/byfranke/area_51
 ```
-Step : 2 Move to DNS_IS directory
+Step : 2 Move to Area 51 directory
 ```
 cd area_51
 ```
@@ -54,9 +54,9 @@ Step : 3 For Installing Dependencies
 ```
 bash dependencies.sh
 ```
-Step : 4 Run DNS_IS
+Step : 4 Run Area 51
 ```
-area_51
+./area_51
 ```
 # Example
 
