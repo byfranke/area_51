@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+
+import sqlite3
+import datetime
+from cryptography.fernet import Fernet
+import hashlib
+import os
+
+database_dir = os.path.dirname(os.path.abspath(__file__))
+database_path = os.path.join(database_dir, 'data', 'database.db')
+
+if not os.path.exists(os.path.dirname(database_path)):
+    os.makedirs(os.path.dirname(database_path))
+
+conn = sqlite3.connect(database_path)
+
+def create_table():
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS comments (
+            id INTEGER PRIMARY KEY,
+            timestamp TEXT NOT NULL,
+            encrypted_comment TEXT NOT NULL,
+            encryption_key TEXT NOT NULL,
+            password_hash TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+
+def generate_key():
+    return Fernet.generate_key()
+
+def encrypt_comment(comment, encryption_key):
+    cipher_suite = Fernet(encryption_key)
+    return cipher_suite.encrypt(comment.encode())
+
+def decrypt_comment(encrypted_comment, encryption_key):
+    cipher_suite = Fernet(encryption_key)
+    return cipher_suite.decrypt(encrypted_comment).decode()
+
+def add_comment(comment, password):
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    encryption_key = generate_key()
+    encrypted_comment = encrypt_comment(comment, encryption_key)
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    conn.execute('INSERT INTO comments (timestamp, encrypted_comment, encryption_key, password_hash) VALUES (?, ?, ?, ?)',
+                 (timestamp, encrypted_comment, encryption_key, password_hash))
+    conn.commit()
+    print("Comment added successfully!")
+
+def list_comments():
+    cursor = conn.execute('SELECT id, timestamp FROM comments')
+    for row in cursor:
+        print(f"{row[0]} - {row[1]}")
+
+    comment_id = int(input("Enter the comment ID you want to read (or 0 to exit): "))
+
+    if comment_id != 0:
+        password = input("Enter the password to decrypt the comment: ")
+        cursor = conn.execute('SELECT encrypted_comment, encryption_key, password_hash FROM comments WHERE id = ?', (comment_id,))
+        encrypted_comment, encryption_key, stored_password_hash = cursor.fetchone()
+
+        input_password_hash = hashlib.sha256(password.encode()).hexdigest()
+
+        if input_password_hash == stored_password_hash:
+            try:
+                decrypted_comment = decrypt_comment(encrypted_comment, encryption_key)
+                print(f"Comment {comment_id}: {decrypted_comment}")
+            except:
+                print("Decryption error.")
+        else:
+            print("Incorrect password.")
+
+create_table()
+
+while True:
+    print("""
+
+
+     \                           ___| _ | 
+    _ \     __|  _ \   _` |      __ \   | 
+   ___ \   |     __/  (   |        ) |  | 
+ _/    _\ _|   \___| \__,_|     ____/  _|                                   
+        github.com/byfranke v0.1                                                                                                  
+    """)
+    print("Options:")
+    print("1 - New comment")
+    print("2 - List comments")
+    print("3 - Exit")
+    option = input("Choose an option: ")
+
+    if option == '1':
+        password = input("Enter the new password to encrypt the comment: ")
+        confirm_password = input("Confirm the password: ")
+        if password == confirm_password:
+            comment = input("Enter your comment: ")
+            add_comment(comment, password)
+        else:
+            print("Passwords do not match. Comment not added.")
+    elif option == '2':
+        list_comments()
+    elif option == '3':
+        break
+    else:
+        print("Invalid option. Choose again.")
+
+conn.close()
