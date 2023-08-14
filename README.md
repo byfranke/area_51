@@ -56,8 +56,12 @@ bash dependencies.sh
 ```
 Step : 4 Run Area 51
 ```
-./area_51
+area_51
 ```
 # Example
+
+![image](https://github.com/byfranke/area_51/assets/131370932/1cf25a44-fe6c-4eda-8e74-e0f49b506765)
+![image](https://github.com/byfranke/area_51/assets/131370932/8158f663-0f58-45fb-9541-b36eee98f3c1)
+![image](https://github.com/byfranke/area_51/assets/131370932/1b3f3035-61c4-448e-a42f-ff50395f02f2)
 
 
