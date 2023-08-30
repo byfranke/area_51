@@ -1,4 +1,4 @@
-# bash dependencies.sh
+# bash installer.sh
 pip install cryptography
 # install area_51
 sudo chmod +x area_51
