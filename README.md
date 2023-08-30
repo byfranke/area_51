@@ -42,19 +42,19 @@ Area 51 offers a secure, easy-to-use solution for storing and managing sensitive
 
 # Installation For Linux
 
-Step : 1 Download Area 51
+Step : 1 Download
 ```
 git clone https://github.com/byfranke/area_51
 ```
-Step : 2 Move to Area 51 directory
+Step : 2 Move to directory
 ```
 cd area_51
 ```
-Step : 3 For Installing Dependencies
+Step : 3 For Installing
 ```
-bash dependencies.sh
+bash installer.sh
 ```
-Step : 4 Run Area 51
+Step : 4 Run
 ```
 area_51
 ```
