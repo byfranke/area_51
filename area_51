@@ -96,7 +96,7 @@ while True:
         if password == confirm_password:
             comment = input("Enter your comment: ")
             if add_comment(comment, password):
-                break  # Exit the loop after adding a comment
+                break 
         else:
             print("Passwords do not match. Comment not added.")
     elif option == '2':
